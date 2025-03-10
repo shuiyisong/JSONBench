@@ -51,6 +51,8 @@ else
     echo "Vector not found, installing..."
     wget https://packages.timber.io/vector/0.45.0/vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
     tar xvf vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
-    mv vector-0.45.0-x86_64-unknown-linux-gnu/bin/vector ./vector
+    rm vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
+    mv vector-x86_64-unknown-linux-gnu/bin/vector ./vector
+    rm -rf vector-x86_64-unknown-linux-gnu
     echo "Downloaded vector."
 fi
