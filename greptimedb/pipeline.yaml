@@ -1,0 +1,18 @@
+processors:
+  - epoch:
+      fields:
+        - time_us
+      resolution: microsecond
+
+transform:
+  - fields:
+      - did
+      - kind
+    type: string
+  - fields:
+      - commit
+    type: json
+  - fields:
+      - time_us
+    type: epoch, us
+    index: timestamp
