@@ -46,11 +46,11 @@ echo "Pipeline initialized."
 
 # Check if vector is installed, if not install it
 if [ -f "./vector" ] && [ -x "./vector" ]; then
+    echo "Vector already installed, skipping installation."
+else
     echo "Vector not found, installing..."
     wget https://packages.timber.io/vector/0.45.0/vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
     tar xvf vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
     mv vector-0.45.0-x86_64-unknown-linux-gnu/bin/vector ./vector
     echo "Downloaded vector."
-else
-    echo "Vector already installed, skipping installation."
 fi

@@ -37,7 +37,7 @@ benchmark() {
 
     # generate vector config using env variables
     rm vector.toml
-    envsubst < vector.toml.tpl > vector.toml
+    DATA_DIRECTORY=$DATA_DIRECTORY envsubst < vector.toml.tpl > vector.toml
 
     # load data using vector
     ./vector -c vector.toml
