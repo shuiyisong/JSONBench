@@ -45,7 +45,7 @@ curl -s -XPOST 'http://localhost:4000/v1/events/pipelines/jsonbench' -F 'file=@p
 echo "Pipeline initialized."
 
 # Check if vector is installed, if not install it
-if [ -f "./vector" ] && [ -x "./vector" ];
+if [ -f "./vector" ] && [ -x "./vector" ]; then
     echo "Vector not found, installing..."
     wget https://packages.timber.io/vector/0.45.0/vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
     tar xvf vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz

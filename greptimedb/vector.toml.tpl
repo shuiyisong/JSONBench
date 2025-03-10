@@ -1,7 +1,7 @@
 [sources.files]
 type = "file"
-include = [ "${DATA_DIRECTORY}/*.json.gz" ]
-data_dir = "${DATA_DIRECTORY}"
+include = [ "$DATA_DIRECTORY/*.json.gz" ]
+data_dir = "$DATA_DIRECTORY"
 ignore_checkpoints = true
 
 [transforms.parse_logs]
