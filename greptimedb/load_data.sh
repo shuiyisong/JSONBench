@@ -35,7 +35,11 @@ mkdir ./vector_checkpoint
 # Start vector
 echo "Starting loading data."
 ./vector -c vector.toml > $SUCCESS_LOG 2> $ERROR_LOG &
-sleep 5
+while true
+do
+    curl -s --fail http://localhost:8686/health && break
+    sleep 1
+done
 
 # Check progress
 echo "Checking loading progress."
