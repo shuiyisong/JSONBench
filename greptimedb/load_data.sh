@@ -29,19 +29,19 @@ else
     echo "Downloaded vector."
 fi
 
-local pattern=""
+pattern=""
 case $MAX_FILES in
     1)
         pattern="file_0001"
         ;;
     10)
-        pattern="file_00{01..10}"
+        pattern="file_00(0[1-9]|10)"
         ;;
     100)
-        pattern="file_0{001..100}"
+        pattern="file_0(0[0-9][1-9]|100)"
         ;;
     1000)
-        pattern="file_{0001..1000}"
+        pattern="file_0(0[0-9][1-9]|[1-9][0-9][0-9]|1000)"
         ;;
     *)
         echo "Unsupported range. Please use 1, 10, 100, or 1000."
