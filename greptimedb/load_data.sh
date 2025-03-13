@@ -31,10 +31,14 @@ fi
 
 # Make config file
 DATA_DIRECTORY=$DATA_DIRECTORY envsubst < vector.toml.tpl > vector.toml
+mkdir ./vector_checkpoint
 # Start vector
+echo "Starting loading data."
 ./vector -c vector.toml > $SUCCESS_LOG 2> $ERROR_LOG &
+sleep 5
 
 # Check progress
+echo "Checking loading progress."
 ./detect_loading.sh
 
 # Done loading, stop vector
@@ -46,7 +50,7 @@ done
 
 rm -rf ./vector_checkpoint
 
-curl -v -XPOST -H 'Content-Type: application/x-www-form-urlencoded' \
+curl -XPOST -H 'Content-Type: application/x-www-form-urlencoded' \
           http://localhost:4000/v1/sql \
           -d "sql=admin flush_table('jsontable')"
 

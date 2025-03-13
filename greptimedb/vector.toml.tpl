@@ -13,6 +13,7 @@ inputs = ["files"]
 source = '''
 . = parse_json!(.message)
 '''
+drop_on_error = true
 
 [sinks.greptime_logs]
 type = "greptimedb_logs"
@@ -22,4 +23,4 @@ dbname = "public"
 endpoint = "http://localhost:4000"
 pipeline_name = "jsonbench"
 table = "jsontable"
-batch.max_events = 500
+batch.max_events = 1000

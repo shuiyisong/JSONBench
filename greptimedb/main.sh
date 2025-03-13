@@ -27,7 +27,7 @@ echo "4) 1000m"
 echo "5) all"
 read -p "Enter the number corresponding to your choice: " choice
 
-./install_new.sh
+./install.sh
 
 benchmark() {
     local size=$1
@@ -41,18 +41,11 @@ benchmark() {
     ./start.sh
     ./load_data.sh "$DATA_DIRECTORY" "$size" "$SUCCESS_LOG" "$ERROR_LOG"
     sleep 1 
-
-    # ./load_data.sh "$DATA_DIRECTORY" "$size" "$SUCCESS_LOG" "$ERROR_LOG"
-
-    # # sleep for a while for settling down the data
-    # sleep 1
-
-    # ./total_size.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.total_size"
-    # ./data_size.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.data_size"
-    # ./index_size.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.index_size"
-    # ./count.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.count"
-    # #./query_results.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.query_results"
-    # ./run_queries.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.results_runtime"
+    ./total_size.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.total_size"
+    ./data_size.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.data_size"
+    ./index_size.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.index_size"
+    ./count.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.count"
+    ./run_queries.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.results_runtime"
 }
 
 case $choice in
