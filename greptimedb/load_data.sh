@@ -21,7 +21,7 @@ counter=0
 for file in $(ls *.json.gz | head -n $MAX_FILES); do
     echo "Processing file: $file"
 
-    curl -v -X "POST" "http://localhost:4000/v1/events/logs?table=jsontable&pipeline_name=jsonbench&ignore_errors=true" \
+    curl -v "http://localhost:4000/v1/events/logs?table=jsontable&pipeline_name=jsonbench&ignore_errors=true" \
          -H "Content-Type: application/x-ndjson" \
          -H "Content-Encoding: gzip" \
          --data-binary @$file
