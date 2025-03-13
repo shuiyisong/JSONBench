@@ -46,6 +46,7 @@ benchmark() {
     ./index_size.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.index_size"
     ./count.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.count"
     ./run_queries.sh | tee "${OUTPUT_PREFIX}_bluesky_${size}m.results_runtime"
+    ./drop_tables.sh 
 }
 
 case $choice in
