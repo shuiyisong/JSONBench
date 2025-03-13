@@ -73,6 +73,7 @@ do
 done
 
 rm -rf ./vector_checkpoint
+rm vector.toml
 
 curl -XPOST -H 'Content-Type: application/x-www-form-urlencoded' \
           http://localhost:4000/v1/sql \
