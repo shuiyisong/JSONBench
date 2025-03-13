@@ -27,20 +27,20 @@ echo "4) 1000m"
 echo "5) all"
 read -p "Enter the number corresponding to your choice: " choice
 
+./install_new.sh
+
 benchmark() {
     local size=$1
+    # Check DATA_DIRECTORY contains the required number of files to run the benchmark
+    file_count=$(find "$DATA_DIRECTORY" -type f | wc -l)
+    if (( file_count < size )); then
+        echo "Error: Not enough files in '$DATA_DIRECTORY'. Required: $size, Found: $file_count."
+        exit 1
+    fi
 
-    ./download_data.sh "$DATA_DIRECTORY" "$size"
-
-    # install is needed here in order to drop the previously ingested data
-    ./install.sh
-
-    # generate vector config using env variables
-    rm vector.toml
-    DATA_DIRECTORY=$DATA_DIRECTORY envsubst < vector.toml.tpl > vector.toml
-
-    # load data using vector
-    ./vector -c vector.toml
+    ./start.sh
+    ./load_data.sh "$DATA_DIRECTORY" "$size" "$SUCCESS_LOG" "$ERROR_LOG"
+    sleep 1 
 
     # ./load_data.sh "$DATA_DIRECTORY" "$size" "$SUCCESS_LOG" "$ERROR_LOG"
 

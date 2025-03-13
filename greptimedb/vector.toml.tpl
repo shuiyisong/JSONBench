@@ -1,7 +1,10 @@
+[api]
+enabled = true
+
 [sources.files]
 type = "file"
 include = [ "$DATA_DIRECTORY/*.json.gz" ]
-data_dir = "$DATA_DIRECTORY"
+data_dir = "./vector_checkpoint"
 ignore_checkpoints = true
 
 [transforms.parse_logs]
@@ -19,4 +22,4 @@ dbname = "public"
 endpoint = "http://localhost:4000"
 pipeline_name = "jsonbench"
 table = "jsontable"
-batch.max_events = 1000
+batch.max_events = 500

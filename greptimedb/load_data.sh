@@ -16,24 +16,38 @@ ERROR_LOG="$4"
 [[ ! -d "$DATA_DIRECTORY" ]] && { echo "Error: Data directory '$DATA_DIRECTORY' does not exist."; exit 1; }
 [[ ! "$MAX_FILES" =~ ^[0-9]+$ ]] && { echo "Error: MAX_FILES must be a positive integer."; exit 1; }
 
-# Load data
-PARALLEL_WORKERS=8
-counter=0
-for file in $(ls "$DATA_DIRECTORY"/*.json.gz | head -n "$MAX_FILES"); do
-    echo "Processing file: $file"
+# Lets use vector to ingest data
+if [ -f "./vector" ] && [ -x "./vector" ]; then
+    echo "Vector already installed, skipping installation."
+else
+    echo "Vector not found, installing..."
+    wget -N https://packages.timber.io/vector/0.45.0/vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
+    tar xvf vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
+    rm vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
+    mv vector-x86_64-unknown-linux-gnu/bin/vector ./vector
+    rm -rf vector-x86_64-unknown-linux-gnu
+    echo "Downloaded vector."
+fi
 
-    zcat $file | curl -s --fail -T - -X POST 'http://localhost:9428/insert/jsonline?_time_field=time_us&_stream_fields=kind,commit.collection,commit.operation' \
-        && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Successfully imported $file." >> "$SUCCESS_LOG" \
-        || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Failed importing $file." >> "$ERROR_LOG" &
+# Make config file
+DATA_DIRECTORY=$DATA_DIRECTORY envsubst < vector.toml.tpl > vector.toml
+# Start vector
+./vector -c vector.toml > $SUCCESS_LOG 2> $ERROR_LOG &
 
-    [[ $(jobs -p -r | wc -l) -ge $PARALLEL_WORKERS ]] && wait -n
+# Check progress
+./detect_loading.sh
 
-    counter=$((counter + 1))
-    if [[ $counter -ge $MAX_FILES ]]; then
-        break
-    fi
+# Done loading, stop vector
+while true
+do
+    pidof vector && kill `pidof vector` || break
+    sleep 1
 done
 
-wait
+rm -rf ./vector_checkpoint
 
-echo "Loaded $MAX_FILES data files from $DATA_DIRECTORY to victorialogs."
+curl -v -XPOST -H 'Content-Type: application/x-www-form-urlencoded' \
+          http://localhost:4000/v1/sql \
+          -d "sql=admin flush_table('jsontable')"
+
+echo "Loaded $MAX_FILES data files from $DATA_DIRECTORY to greptimedb."
