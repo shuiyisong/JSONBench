@@ -3,7 +3,7 @@ enabled = true
 
 [sources.files]
 type = "file"
-include = [ "$DATA_DIRECTORY/$FILE_NUMBER.json.gz" ]
+include = [ $DATA_PATHS ]
 data_dir = "./vector_checkpoint"
 ignore_checkpoints = true
 

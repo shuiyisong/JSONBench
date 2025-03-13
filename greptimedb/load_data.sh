@@ -50,7 +50,7 @@ case $MAX_FILES in
 esac
 
 # Make config file
-DATA_DIRECTORY=$DATA_DIRECTORY FILE_NUMBER=$pattern envsubst < vector.toml.tpl > vector.toml
+DATA_PATHS=$DATA_PATHS envsubst < vector.toml.tpl > vector.toml
 mkdir ./vector_checkpoint
 # Start vector
 echo "Starting loading data."
