@@ -16,64 +16,28 @@ ERROR_LOG="$4"
 [[ ! -d "$DATA_DIRECTORY" ]] && { echo "Error: Data directory '$DATA_DIRECTORY' does not exist."; exit 1; }
 [[ ! "$MAX_FILES" =~ ^[0-9]+$ ]] && { echo "Error: MAX_FILES must be a positive integer."; exit 1; }
 
-# Lets use vector to ingest data
-if [ -f "./vector" ] && [ -x "./vector" ]; then
-    echo "Vector already installed, skipping installation."
-else
-    echo "Vector not found, installing..."
-    wget -N https://packages.timber.io/vector/0.45.0/vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
-    tar xvf vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
-    rm vector-0.45.0-x86_64-unknown-linux-gnu.tar.gz
-    mv vector-x86_64-unknown-linux-gnu/bin/vector ./vector
-    rm -rf vector-x86_64-unknown-linux-gnu
-    echo "Downloaded vector."
-fi
+pushd $DATA_DIRECTORY
+counter=0
+for file in $(ls *.json.gz | head -n $MAX_FILES); do
+    echo "Processing file: $file"
 
-DATA_PATHS=""
-case $MAX_FILES in
-    1)
-        DATA_PATHS="\"$DATA_DIRECTORY/file_0001.json.gz\""
-        ;;
-    10)
-        DATA_PATHS="\"$DATA_DIRECTORY/file_000?.json.gz\", \"$DATA_DIRECTORY/file_0010.json.gz\""
-        ;;
-    100)
-        DATA_PATHS="\"$DATA_DIRECTORY/file_00??.json.gz\", \"$DATA_DIRECTORY/file_0100.json.gz\""
-        ;;
-    1000)
-        DATA_PATHS="\"$DATA_DIRECTORY/file_*.json.gz\""
-        ;;
-    *)
-        echo "Unsupported range. Please use 1, 10, 100, or 1000."
-        return 1
-        ;;
-esac
+    curl -v -X "POST" "http://localhost:4000/v1/events/logs?table=jsontable&pipeline_name=jsonbench&ignore_errors=true" \
+         -H "Content-Type: application/x-ndjson" \
+         -H "Content-Encoding: gzip" \
+         --data-binary @$file
 
-# Make config file
-DATA_PATHS=$DATA_PATHS envsubst < vector.toml.tpl > vector.toml
-mkdir ./vector_checkpoint
-# Start vector
-echo "Starting loading data."
-./vector -c vector.toml > $SUCCESS_LOG 2> $ERROR_LOG &
-while true
-do
-    curl -s --fail http://localhost:8686/health && break
-    sleep 1
+    first_attempt=$?
+    if [[ $first_attempt -eq 0 ]]; then
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Successfully imported $file." >> "$SUCCESS_LOG"
+    else
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Failed for $file. Giving up." >> "$ERROR_LOG"
+    fi
+
+    counter=$((counter + 1))
+    if [[ $counter -ge $MAX_FILES ]]; then
+        break
+    fi
 done
-
-# Check progress
-echo "Checking loading progress."
-./detect_loading.sh
-
-# Done loading, stop vector
-while true
-do
-    pidof vector && kill `pidof vector` || break
-    sleep 1
-done
-
-rm -rf ./vector_checkpoint
-rm vector.toml
 
 curl -XPOST -H 'Content-Type: application/x-www-form-urlencoded' \
           http://localhost:4000/v1/sql \
