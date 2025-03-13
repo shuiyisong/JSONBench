@@ -29,8 +29,28 @@ else
     echo "Downloaded vector."
 fi
 
+local pattern=""
+case $MAX_FILES in
+    1)
+        pattern="file_0001"
+        ;;
+    10)
+        pattern="file_00[01-10]"
+        ;;
+    100)
+        pattern="file_0[001-100]"
+        ;;
+    1000)
+        pattern="file_[0001-1000]"
+        ;;
+    *)
+        echo "Unsupported range. Please use 1, 10, 100, or 1000."
+        return 1
+        ;;
+esac
+
 # Make config file
-DATA_DIRECTORY=$DATA_DIRECTORY envsubst < vector.toml.tpl > vector.toml
+DATA_DIRECTORY=$DATA_DIRECTORY FILE_NUMBER=$pattern envsubst < vector.toml.tpl > vector.toml
 mkdir ./vector_checkpoint
 # Start vector
 echo "Starting loading data."
