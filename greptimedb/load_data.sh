@@ -29,19 +29,19 @@ else
     echo "Downloaded vector."
 fi
 
-pattern=""
+DATA_PATHS=""
 case $MAX_FILES in
     1)
-        pattern="file_0001"
+        DATA_PATHS="\"$DATA_DIRECTORY/file_0001.json.gz\""
         ;;
     10)
-        pattern="file_00(0[1-9]|10)"
+        DATA_PATHS="\"$DATA_DIRECTORY/file_000?.json.gz\", \"$DATA_DIRECTORY/file_0010.json.gz\""
         ;;
     100)
-        pattern="file_0(0[0-9][1-9]|100)"
+        DATA_PATHS="\"$DATA_DIRECTORY/file_00??.json.gz\", \"$DATA_DIRECTORY/file_0100.json.gz\""
         ;;
     1000)
-        pattern="file_0(0[0-9][1-9]|[1-9][0-9][0-9]|1000)"
+        DATA_PATHS="\"$DATA_DIRECTORY/file_*.json.gz\""
         ;;
     *)
         echo "Unsupported range. Please use 1, 10, 100, or 1000."
