@@ -2,7 +2,7 @@
   "system": "GreptimeDB",
   "version": "v0.13.0-nightly-20250315",
   "os": "Ubuntu 24.04",
-  "date": "2025-03-15",
+  "date": "2025-03-17",
   "machine": "m6i.8xlarge, 10000gib gp3",
   "cluster_size": 1,
   "comment": "",
@@ -20,17 +20,17 @@
   "index_size": 7048,
   "index_size_readable": "7 KB",
   "result": [
-    [0.02, 0.012, 0.011],
-    [0.071, 0.068, 0.069],
-    [0.015, 0.013, 0.017],
-    [0.013, 0.013, 0.014],
-    [0.017, 0.017, 0.016]
+    [0.126, 0.014, 0.012],
+    [0.187, 0.07, 0.069],
+    [0.11, 0.014, 0.022],
+    [0.089, 0.018, 0.014],
+    [0.098, 0.026, 0.016]
   ],
   "result_readable": [
-    "20.00 msec, 12.00 msec, 11.00 msec",
-    "71.00 msec, 68.00 msec, 69.00 msec",
-    "15.00 msec, 13.00 msec, 17.00 msec",
-    "13.00 msec, 13.00 msec, 14.00 msec",
-    "17.00 msec, 17.00 msec, 16.00 msec"
+    "126.00 msec, 14.00 msec, 12.00 msec",
+    "187.00 msec, 70.00 msec, 69.00 msec",
+    "110.00 msec, 14.00 msec, 22.00 msec",
+    "89.00 msec, 18.00 msec, 14.00 msec",
+    "98.00 msec, 26.00 msec, 16.00 msec"
   ]
 }

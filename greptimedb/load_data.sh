@@ -42,7 +42,7 @@ done
 
 curl -XPOST -H 'Content-Type: application/x-www-form-urlencoded' \
           http://localhost:4000/v1/sql \
-          -d "sql=admin flush_table('bluesky')" \ 
+          -d "sql=admin flush_table('bluesky')" \
           -d "format=json"
 
 echo -e "\nLoaded $MAX_FILES data files from $DATA_DIRECTORY to greptimedb."
