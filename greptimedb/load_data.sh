@@ -21,10 +21,11 @@ counter=0
 for file in $(ls *.json.gz | head -n $MAX_FILES); do
     echo "Processing file: $file"
 
-    curl "http://localhost:4000/v1/events/logs?table=jsontable&pipeline_name=jsonbench&ignore_errors=true" \
+    curl "http://localhost:4000/v1/events/logs?table=bluesky&pipeline_name=jsonbench&ignore_errors=true&format=json" \
          -H "Content-Type: application/x-ndjson" \
          -H "Content-Encoding: gzip" \
          --data-binary @$file
+    echo ""
 
     first_attempt=$?
     if [[ $first_attempt -eq 0 ]]; then
@@ -41,6 +42,6 @@ done
 
 curl -XPOST -H 'Content-Type: application/x-www-form-urlencoded' \
           http://localhost:4000/v1/sql \
-          -d "sql=admin flush_table('jsontable')"
+          -d "sql=admin flush_table('bluesky')"
 
 echo "Loaded $MAX_FILES data files from $DATA_DIRECTORY to greptimedb."

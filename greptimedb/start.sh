@@ -23,4 +23,4 @@ echo "Started greptimedb."
 
 # init pipeline
 curl -s -XPOST 'http://localhost:4000/v1/events/pipelines/jsonbench' -F 'file=@pipeline.yaml'
-echo "Pipeline initialized."
+echo -e "\nPipeline initialized."

@@ -4,6 +4,10 @@ TRIES=3
 
 set -f
 cat queries.sql | while read -r query; do
+    # Clear the Linux file system cache
+    echo "Clearing file system cache..."
+    sync
+    echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
 
     # Print the query
     echo "Running query: $query"
