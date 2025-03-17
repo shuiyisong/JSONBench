@@ -14,9 +14,9 @@
   "num_loaded_documents": 1000000,
   "data_compression": "auto",
   "total_size": 112555783,
-  "total_size_readable": "107 MB",
+  "total_size_readable": "113 MB",
   "data_size": 112546830,
-  "data_size_readable": "107 MB",
+  "data_size_readable": "113 MB",
   "index_size": 7048,
   "index_size_readable": "7 KB",
   "result": [

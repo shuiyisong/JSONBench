@@ -45,4 +45,4 @@ curl -XPOST -H 'Content-Type: application/x-www-form-urlencoded' \
           -d "sql=admin flush_table('bluesky')" \
           -d "format=json"
 
-echo -e "\nLoaded $MAX_FILES data files from $DATA_DIRECTORY to greptimedb."
+echo -e "\nLoaded $MAX_FILES data files from $DATA_DIRECTORY to GreptimeDB."
