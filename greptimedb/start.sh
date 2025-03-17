@@ -16,7 +16,7 @@ export GREPTIMEDB_STANDALONE__HTTP__TIMEOUT=500s
 
 while true
 do
-    curl -s --fail http://localhost:4000/health && break
+    curl -s --fail -o /dev/null http://localhost:4000/health && break
     sleep 1
 done
 echo "Started greptimedb."
